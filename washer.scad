@@ -31,24 +31,28 @@ gofoil_washer();
 
 //
 // The defaults are measured (by hand) from an actual Go Foil plate washer
-//
+//  
 module gofoil_washer(base_height = 3.1, 
-    bevel_height = 3.1, 
-    outer_radius = 31.4/2, 
-    bevel_radius = 24.3 / 2, 
-    shaft_radius = 8.1 / 2, 
-    countersink_outer_radius = 16.1 / 2, 
-    countersink_inset_height = 1) {
+        bevel_height = 3.1, 
+        outer_radius = 31.4/2, 
+        bevel_radius = 24.3 / 2, 
+        shaft_radius = 8.1 / 2, 
+        countersink_outer_radius = 16.1 / 2, 
+        countersink_inset_height = 1) {
         
-        full_height = base_height + bevel_height;
-        countersink_bevel_height = full_height - countersink_inset_height * 2;
-        
-        // This offset ensures that the negative space of the countersink extends
-        // past the top and bottom of the main washer
-        // The preview rendering doesn't look right but the final rendering and
-        // print are fine.
-        
-        buffer_offset = 1; 
+    full_height = base_height + bevel_height;
+    countersink_bevel_height = full_height - countersink_inset_height * 2;
+    
+    // This offset ensures that the negative space of the countersink extends
+    // past the top and bottom of the main washer
+    // The preview rendering doesn't look right but the final rendering and
+    // print are fine.
+    
+    buffer_offset = 1; 
+            
+            
+    // The washer is a simple bevel with a countersunk space through it
+    // We do this with the base_washer - the countersink
     difference() {
         
         base_washer(outer_radius, bevel_radius, base_height, bevel_height);
@@ -77,6 +81,10 @@ module countersink(r_outer, r_shaft, h_bevel, h_inset, h_shaft) {
 
 
 // This is the module that does all the work. 
+// Everything comes down to a base, a bevel, and a shaft. 
+// Setting h_shaft to zero gets a normal washer.
+// A non zero shaft starts to look like a countersunk bolt
+//
 module bevel_with_shaft(r_outer, r_inner, h_base, h_bevel, h_shaft) {
     
     union() {
